@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"github.com/sirupsen/logrus"
@@ -26,6 +27,12 @@ func (c *RestController) init() {
 
 func (c *RestController) run(port string) {
 	logrus.Info("Controller Running on port " + port + "...")
+	if c.r == nil {
+		fmt.Printf("fffffffffffff")
+	}
 	handler := cors.New(cors.Options{AllowedMethods: []string{"GET", "POST", "DELETE", "PATCH", "OPTIONS"}}).Handler(c.r)
-	http.ListenAndServe(port, handler)
+	err := http.ListenAndServe(port, handler)
+	if err != nil {
+		logrus.Fatal(err)
+	}
 }
